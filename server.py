@@ -86,7 +86,8 @@ class FileServerHandler(http.server.BaseHTTPRequestHandler):
                 self.send_response(400)
                 self.send_header('Content-type', 'text/plain')
                 self.end_headers()
-                self.wfile.write(b"Ошибка: ожидается multipart/form-data")
+                # 🔧 ИСПРАВЛЕНО: используем .encode('utf-8') вместо b""
+                self.wfile.write("Ошибка: ожидается multipart/form-data".encode('utf-8'))
                 return
             
             # Извлекаем boundary
@@ -97,7 +98,7 @@ class FileServerHandler(http.server.BaseHTTPRequestHandler):
                 self.send_response(400)
                 self.send_header('Content-type', 'text/plain')
                 self.end_headers()
-                self.wfile.write(b"Ошибка: не найден boundary")
+                self.wfile.write("Ошибка: не найден boundary".encode('utf-8'))
                 return
             
             # Читаем тело запроса
@@ -134,7 +135,7 @@ class FileServerHandler(http.server.BaseHTTPRequestHandler):
                         filename = line.split('filename=')[1].strip('"').strip("'")
                         break
                 
-                # 🔧 ИСПРАВЛЕННАЯ СТРОКА (было: if filename and file_)
+                # 🔧 ИСПРАВЛЕНО: было file_ (недописано)
                 if filename and file_data:
                     # Сохраняем файл
                     file_path = os.path.join(UPLOAD_FOLDER, filename)
@@ -160,7 +161,9 @@ class FileServerHandler(http.server.BaseHTTPRequestHandler):
             self.send_response(500)
             self.send_header('Content-type', 'text/plain')
             self.end_headers()
+            # 🔧 ИСПРАВЛЕНО: используем .encode('utf-8')
             self.wfile.write(f"Ошибка сервера: {str(e)}".encode('utf-8'))
+    
     def _handle_download(self, filename):
         """Обработка скачивания файла"""
         file_path = os.path.join(UPLOAD_FOLDER, filename)
@@ -180,7 +183,7 @@ class FileServerHandler(http.server.BaseHTTPRequestHandler):
             self.send_response(404)
             self.send_header('Content-type', 'text/plain')
             self.end_headers()
-            self.wfile.write(b"Файл не найден")
+            self.wfile.write(b"File not found")
     
     def _handle_list(self):
         """Возвращает список файлов на сервере"""
