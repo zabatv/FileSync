@@ -21,7 +21,7 @@ import argparse
 import shutil
 
 # CONFIGURATION
-SERVER_IP = '192.168.0.104'
+SERVER_IP = '109.248.181.142'
 SERVER_PORT = 5000
 DOWNLOAD_FOLDER = './downloaded_files'
 
@@ -157,7 +157,7 @@ def delete_path(path):
         print(f"Deleting: {path}")
         payload = json.dumps({"path": path}).encode('utf-8')
         headers = {'Content-Type': 'application/json'}
-        
+
         conn.request('DELETE', '/delete', payload, headers)
         response = conn.getresponse()
         data = response.read().decode('utf-8')
@@ -186,7 +186,7 @@ def create_directory(path):
         print(f"Creating directory: {path}")
         payload = json.dumps({"path": path}).encode('utf-8')
         headers = {'Content-Type': 'application/json'}
-        
+
         conn.request('POST', '/mkdir', payload, headers)
         response = conn.getresponse()
         data = response.read().decode('utf-8')
@@ -212,7 +212,7 @@ def remove_directory(path):
         print(f"Removing directory: {path}")
         payload = json.dumps({"path": path}).encode('utf-8')
         headers = {'Content-Type': 'application/json'}
-        
+
         conn.request('DELETE', '/rmdir', payload, headers)
         response = conn.getresponse()
         data = response.read().decode('utf-8')
