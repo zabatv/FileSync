@@ -76,7 +76,7 @@ class FileServerHandler(http.server.BaseHTTPRequestHandler):
             content_length = int(self.headers.get('Content-Length', 0))
             post_data = self.rfile.read(content_length)
             data = json.loads(post_data.decode('utf-8'))
-           ('message', 'No message')
+            message = data.get('message', 'No message')
 
             print(f"[HELLO] Received message: {message}")
 
@@ -176,7 +176,7 @@ class FileServerHandler(http.server.BaseHTTPRequestHandler):
             self.send_header('Content-Length', len(file_data))
             self.end_headers()
             self.wfile.write(file_data)
-            print(f"[: {filename}")
+            print(f"[DOWNLOAD] Sent file: {filename}")
         else:
             self.send_response(404)
             self.send_header('Content-type', 'text/plain')
@@ -274,7 +274,7 @@ class FileServerHandler(http.server.BaseHTTPRequestHandler):
 
     def _handle_rmdir(self):
         try:
-            content_length = int(self.headers.get('0))
+            content_length = int(self.headers.get('Content-Length', 0))
             post_data = self.rfile.read(content_length)
             data = json.loads(post_data.decode('utf-8'))
             path = data.get('path', '')
