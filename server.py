@@ -134,6 +134,7 @@ class FileServerHandler(http.server.BaseHTTPRequestHandler):
                         filename = line.split('filename=')[1].strip('"').strip("'")
                         break
                 
+                # 🔧 ИСПРАВЛЕННАЯ СТРОКА (было: if filename and file_)
                 if filename and file_data:
                     # Сохраняем файл
                     file_path = os.path.join(UPLOAD_FOLDER, filename)
@@ -160,7 +161,6 @@ class FileServerHandler(http.server.BaseHTTPRequestHandler):
             self.send_header('Content-type', 'text/plain')
             self.end_headers()
             self.wfile.write(f"Ошибка сервера: {str(e)}".encode('utf-8'))
-    
     def _handle_download(self, filename):
         """Обработка скачивания файла"""
         file_path = os.path.join(UPLOAD_FOLDER, filename)
